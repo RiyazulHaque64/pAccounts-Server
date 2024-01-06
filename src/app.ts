@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import httpStatus from 'http-status';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 
 const app: Application = express();
 
@@ -10,5 +11,8 @@ app.use('/', (req, res) => {
     message: 'pAccounts server is working fine',
   });
 });
+
+// global error handler middleware
+app.use(globalErrorHandler);
 
 export default app;
