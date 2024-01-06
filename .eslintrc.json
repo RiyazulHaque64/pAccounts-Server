@@ -15,5 +15,8 @@
     "no-unused-expressions": "error",
     "prefer-const": "error",
     "no-undef": "error"
+  },
+  "globals": {
+    "process": "readonly"
   }
 }
