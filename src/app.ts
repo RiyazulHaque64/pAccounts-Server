@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import cors from 'cors';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
+import router from './app/routes';
 
 const app: Application = express();
 
@@ -17,6 +18,9 @@ app.get('/', (req, res) => {
     message: 'pAccounts server is working fine',
   });
 });
+
+// application router
+app.use('/api', router);
 
 // global error handler middleware
 app.use(globalErrorHandler);
