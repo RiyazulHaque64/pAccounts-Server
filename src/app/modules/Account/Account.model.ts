@@ -4,34 +4,37 @@ import { AccountType } from './Account.constant';
 import httpStatus from 'http-status';
 import AppError from '../../error/AppError';
 
-const accountSchema = new Schema<TAccount, AccountMethod>({
-  user: {
-    type: String,
-    required: [true, 'User email is required!'],
+const accountSchema = new Schema<TAccount, AccountMethod>(
+  {
+    user: {
+      type: String,
+      required: [true, 'User email is required!'],
+    },
+    name: {
+      type: String,
+      required: [true, 'Account name is must be required!'],
+    },
+    type: {
+      type: String,
+      enum: AccountType,
+      required: [true, 'Account type is required!'],
+    },
+    balance: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+    previousBalance: {
+      type: Number,
+      default: 0,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  name: {
-    type: String,
-    required: [true, 'Account name is must be required!'],
-  },
-  type: {
-    type: String,
-    enum: AccountType,
-    required: [true, 'Account type is required!'],
-  },
-  balance: {
-    type: Number,
-    min: 0,
-    default: 0,
-  },
-  previousBalance: {
-    type: Number,
-    default: 0,
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { timestamps: true },
+);
 
 // Account existence verification
 accountSchema.statics.isAccountExists = async function (id: string) {
