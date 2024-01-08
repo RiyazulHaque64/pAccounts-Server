@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { AccountRoutes } from '../modules/Account/Account.route';
+import { SectorRoutes } from '../modules/Sector/Sector.route';
 
 const router = Router();
 
@@ -7,6 +8,10 @@ const routes = [
   {
     path: '/accounts',
     routes: AccountRoutes,
+  },
+  {
+    path: '/sectors',
+    routes: SectorRoutes,
   },
 ];
 

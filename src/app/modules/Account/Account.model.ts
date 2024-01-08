@@ -10,11 +10,11 @@ const accountSchema = new Schema<TAccount, AccountMethod>(
       type: String,
       required: [true, 'User email is required!'],
     },
-    name: {
+    accountName: {
       type: String,
       required: [true, 'Account name is must be required!'],
     },
-    type: {
+    accountType: {
       type: String,
       enum: AccountType,
       required: [true, 'Account type is required!'],

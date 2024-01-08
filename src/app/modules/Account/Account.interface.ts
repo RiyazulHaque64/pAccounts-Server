@@ -2,8 +2,8 @@ import { Model } from 'mongoose';
 
 export interface TAccount {
   user: string;
-  name: string;
-  type: 'bank' | 'mobile bank' | 'cash';
+  accountName: string;
+  accountType: 'bank' | 'mobile bank' | 'cash';
   balance: number;
   previousBalance: number;
   isDeleted: boolean;
