@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
-import { SectorMethod, TSector } from './Sector.interface';
-import { SectorType } from './Sector.const';
-import AppError from '../../error/AppError';
 import httpStatus from 'http-status';
+import { Schema, model } from 'mongoose';
+import AppError from '../../error/AppError';
+import { SectorType } from './Sector.const';
+import { SectorMethod, TSector } from './Sector.interface';
 
 const sectorSchema = new Schema<TSector, SectorMethod>(
   {
@@ -30,10 +30,12 @@ const sectorSchema = new Schema<TSector, SectorMethod>(
     previousTransaction: {
       type: Number,
       default: 0,
+      select: 0,
     },
     isDeleted: {
       type: Boolean,
       default: false,
+      select: 0,
     },
   },
   { timestamps: true },

@@ -1,11 +1,32 @@
 import httpStatus from 'http-status';
+import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../error/AppError';
+import { sectorSearchableField } from './Sector.const';
 import { TSector } from './Sector.interface';
 import Sector from './Sector.model';
 
 const createSectorIntoDB = async (user: string, payload: TSector) => {
   payload.user = user;
   const result = await Sector.create(payload);
+  return result;
+};
+
+const getSectorsFromDB = async (query: Record<string, unknown>) => {
+  console.log(query);
+  console.log(sectorSearchableField);
+  const accountQuery = new QueryBuilder(Sector.find(), query)
+    .search(sectorSearchableField)
+    .filter()
+    .sort()
+    .limit()
+    .paginate()
+    .fields();
+  const result = await accountQuery.queryModel;
+  return result;
+};
+
+const getSingleSectorFromDB = async (id: string) => {
+  const result = await Sector.findById(id);
   return result;
 };
 
@@ -46,4 +67,6 @@ export const SectorServices = {
   createSectorIntoDB,
   deleteSectorFromDB,
   updateSectorIntoDB,
+  getSectorsFromDB,
+  getSingleSectorFromDB,
 };

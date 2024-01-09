@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
-import { AccountMethod, TAccount } from './Account.interface';
-import { AccountType } from './Account.constant';
 import httpStatus from 'http-status';
+import { Schema, model } from 'mongoose';
 import AppError from '../../error/AppError';
+import { AccountType } from './Account.constant';
+import { AccountMethod, TAccount } from './Account.interface';
 
 const accountSchema = new Schema<TAccount, AccountMethod>(
   {
@@ -27,10 +27,12 @@ const accountSchema = new Schema<TAccount, AccountMethod>(
     previousBalance: {
       type: Number,
       default: 0,
+      select: 0,
     },
     isDeleted: {
       type: Boolean,
       default: false,
+      select: 0,
     },
   },
   { timestamps: true },

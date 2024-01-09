@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
+import QueryBuilder from '../../builder/QueryBuilder';
+import AppError from '../../error/AppError';
+import { AccountSearchableField } from './Account.constant';
 import { TAccount } from './Account.interface';
 import Account from './Account.model';
-import AppError from '../../error/AppError';
-import QueryBuilder from '../../builder/QueryBuilder';
-import { SearchableField } from './Account.constant';
 
 const createAccountIntoDB = async (user: string, payload: TAccount) => {
   payload.user = user;
@@ -13,7 +13,7 @@ const createAccountIntoDB = async (user: string, payload: TAccount) => {
 
 const getAccountsFromDB = async (query: Record<string, unknown>) => {
   const accountQuery = new QueryBuilder(Account.find(), query)
-    .search(SearchableField)
+    .search(AccountSearchableField)
     .filter()
     .sort()
     .limit()

@@ -17,6 +17,26 @@ const createSector = catchAsync(async (req, res) => {
   });
 });
 
+const getSectors = catchAsync(async (req, res) => {
+  const result = await SectorServices.getSectorsFromDB(req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Sector are retrieved successfully',
+    data: result,
+  });
+});
+
+const getSingleSector = catchAsync(async (req, res) => {
+  const result = await SectorServices.getSingleSectorFromDB(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Sector is retrieved successfully',
+    data: result,
+  });
+});
+
 const updateSector = catchAsync(async (req, res) => {
   const result = await SectorServices.updateSectorIntoDB(
     req.params.id,
@@ -44,4 +64,6 @@ export const SectorControllers = {
   createSector,
   deleteSector,
   updateSector,
+  getSectors,
+  getSingleSector,
 };
