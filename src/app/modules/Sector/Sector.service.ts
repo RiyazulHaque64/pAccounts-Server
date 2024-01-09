@@ -14,7 +14,10 @@ const createSectorIntoDB = async (user: string, payload: TSector) => {
 const getSectorsFromDB = async (query: Record<string, unknown>) => {
   console.log(query);
   console.log(sectorSearchableField);
-  const accountQuery = new QueryBuilder(Sector.find(), query)
+  const accountQuery = new QueryBuilder(
+    Sector.find({ isDeleted: false }),
+    query,
+  )
     .search(sectorSearchableField)
     .filter()
     .sort()
@@ -26,7 +29,7 @@ const getSectorsFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleSectorFromDB = async (id: string) => {
-  const result = await Sector.findById(id);
+  const result = await Sector.findOne({ _id: id, isDeleted: false });
   return result;
 };
 

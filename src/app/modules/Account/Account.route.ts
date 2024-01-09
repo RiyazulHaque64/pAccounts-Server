@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { AccountControllers } from './Account.controller';
 import validateRequest from '../../middlewares/validateRequest';
+import { AccountControllers } from './Account.controller';
 import { AccountValidations } from './Account.validation';
 
 const router = Router();
@@ -12,6 +12,8 @@ router.post(
 );
 
 router.get('/', AccountControllers.getAccounts);
+
+router.get('/:id', AccountControllers.getSingleAccount);
 
 router.put(
   '/:id',

@@ -12,7 +12,10 @@ const createAccountIntoDB = async (user: string, payload: TAccount) => {
 };
 
 const getAccountsFromDB = async (query: Record<string, unknown>) => {
-  const accountQuery = new QueryBuilder(Account.find(), query)
+  const accountQuery = new QueryBuilder(
+    Account.find({ isDeleted: false }),
+    query,
+  )
     .search(AccountSearchableField)
     .filter()
     .sort()
@@ -21,6 +24,11 @@ const getAccountsFromDB = async (query: Record<string, unknown>) => {
     .fields();
   const result = await accountQuery.queryModel;
   // const result = await Account.find().limit(2);
+  return result;
+};
+
+const getSingleAccountFromDB = async (id: string) => {
+  const result = await Account.findOne({ _id: id, isDeleted: false });
   return result;
 };
 
@@ -64,4 +72,5 @@ export const AccountServices = {
   deleteAccountFromDB,
   updateAccountIntoDB,
   getAccountsFromDB,
+  getSingleAccountFromDB,
 };

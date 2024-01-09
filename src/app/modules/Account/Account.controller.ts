@@ -1,7 +1,7 @@
-import { AccountServices } from './Account.service';
-import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { AccountServices } from './Account.service';
 
 const createAccount = catchAsync(async (req, res) => {
   const data = req.body;
@@ -22,7 +22,17 @@ const getAccounts = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Accounts is retrieved successfully',
+    message: 'Accounts are retrieved successfully',
+    data: result,
+  });
+});
+
+const getSingleAccount = catchAsync(async (req, res) => {
+  const result = await AccountServices.getSingleAccountFromDB(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Account is retrieved successfully',
     data: result,
   });
 });
@@ -55,4 +65,5 @@ export const AccountControllers = {
   deleteAccount,
   updateAccount,
   getAccounts,
+  getSingleAccount,
 };

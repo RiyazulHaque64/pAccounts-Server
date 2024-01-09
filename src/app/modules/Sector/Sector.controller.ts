@@ -22,7 +22,7 @@ const getSectors = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Sector are retrieved successfully',
+    message: 'Sectors are retrieved successfully',
     data: result,
   });
 });
