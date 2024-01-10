@@ -5,7 +5,7 @@ const createSectorValidationSchema = z.object({
   body: z.object({
     sectorName: z.string({
       invalid_type_error: 'Sector name must be in string!',
-      required_error: 'Sector name is required',
+      required_error: 'Sector name is required!',
     }),
     sectorType: z.enum([...SectorType] as [string], {
       required_error: 'Sector type is required!',

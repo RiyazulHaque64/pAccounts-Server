@@ -3,9 +3,13 @@ import { TTransaction } from './Transaction.interface';
 
 const transactionSchema = new Schema<TTransaction>(
   {
+    user: {
+      type: String,
+      required: [true, 'User is required!'],
+    },
     date: {
       type: Date,
-      default: Date.now(),
+      default: new Date(),
     },
     title: {
       type: String,

@@ -2,10 +2,12 @@ import { z } from 'zod';
 
 const createTransactionValidationSchema = z.object({
   body: z.object({
-    date: z.date({
-      invalid_type_error: 'Date must be in date format',
-      required_error: 'Date is required!',
-    }),
+    date: z.coerce
+      .date({
+        invalid_type_error: 'Date must be in date format',
+        required_error: 'Date is required!',
+      })
+      .default(new Date()),
     title: z.string({
       required_error: 'Transaction title is required!',
       invalid_type_error: 'Transaction title must be in string!',
