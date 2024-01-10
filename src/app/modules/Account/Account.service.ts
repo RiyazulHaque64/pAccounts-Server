@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../error/AppError';
 import { AccountSearchableField } from './Account.constant';
@@ -27,12 +28,12 @@ const getAccountsFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const getSingleAccountFromDB = async (id: string) => {
-  const result = await Account.findOne({ _id: id, isDeleted: false });
+const getSingleAccountFromDB = async (id: Types.ObjectId) => {
+  const result = await Account.isAccountExists(id);
   return result;
 };
 
-const updateAccountIntoDB = async (id: string, payload: TAccount) => {
+const updateAccountIntoDB = async (id: Types.ObjectId, payload: TAccount) => {
   const { user, previousBalance, ...remainingData } = payload;
   const account = await Account.isAccountExists(id);
   if (user) {
@@ -57,7 +58,7 @@ const updateAccountIntoDB = async (id: string, payload: TAccount) => {
   return result;
 };
 
-const deleteAccountFromDB = async (id: string) => {
+const deleteAccountFromDB = async (id: Types.ObjectId) => {
   const account = await Account.isAccountExists(id);
   const result = await Account.findByIdAndUpdate(id, {
     previousBalance: account?.balance,

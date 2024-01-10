@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AccountServices } from './Account.service';
@@ -28,7 +29,9 @@ const getAccounts = catchAsync(async (req, res) => {
 });
 
 const getSingleAccount = catchAsync(async (req, res) => {
-  const result = await AccountServices.getSingleAccountFromDB(req.params.id);
+  const result = await AccountServices.getSingleAccountFromDB(
+    new Types.ObjectId(req.params.id),
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -39,7 +42,7 @@ const getSingleAccount = catchAsync(async (req, res) => {
 
 const updateAccount = catchAsync(async (req, res) => {
   const result = await AccountServices.updateAccountIntoDB(
-    req.params.id,
+    new Types.ObjectId(req.params.id),
     req.body,
   );
   sendResponse(res, {
@@ -51,7 +54,7 @@ const updateAccount = catchAsync(async (req, res) => {
 });
 
 const deleteAccount = catchAsync(async (req, res) => {
-  await AccountServices.deleteAccountFromDB(req.params?.id);
+  await AccountServices.deleteAccountFromDB(new Types.ObjectId(req.params?.id));
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

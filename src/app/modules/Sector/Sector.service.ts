@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../error/AppError';
 import { sectorSearchableField } from './Sector.const';
@@ -28,12 +29,12 @@ const getSectorsFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const getSingleSectorFromDB = async (id: string) => {
-  const result = await Sector.findOne({ _id: id, isDeleted: false });
+const getSingleSectorFromDB = async (id: Types.ObjectId) => {
+  const result = await Sector.isSectorExists(id);
   return result;
 };
 
-const updateSectorIntoDB = async (id: string, payload: TSector) => {
+const updateSectorIntoDB = async (id: Types.ObjectId, payload: TSector) => {
   const { user, previousTransaction, transaction, ...remainingData } = payload;
   await Sector.isSectorExists(id);
   if (user) {
@@ -56,7 +57,7 @@ const updateSectorIntoDB = async (id: string, payload: TSector) => {
   return result;
 };
 
-const deleteSectorFromDB = async (id: string) => {
+const deleteSectorFromDB = async (id: Types.ObjectId) => {
   const sector = await Sector.isSectorExists(id);
   const result = await Sector.findByIdAndUpdate(id, {
     previousTransaction: sector?.transaction,

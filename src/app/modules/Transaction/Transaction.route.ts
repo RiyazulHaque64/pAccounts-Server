@@ -11,4 +11,8 @@ router.post(
   TransactionControllers.createTransaction,
 );
 
+router.get('/:id', TransactionControllers.getSingleTransaction);
+
+router.delete('/:id', TransactionControllers.deleteTransaction);
+
 export const TransactionRoutes = router;

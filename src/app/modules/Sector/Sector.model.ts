@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import AppError from '../../error/AppError';
 import { SectorType } from './Sector.const';
 import { SectorMethod, TSector } from './Sector.interface';
@@ -20,7 +20,7 @@ const sectorSchema = new Schema<TSector, SectorMethod>(
       required: [true, 'Sector type is reqired'],
     },
     parent: {
-      type: String,
+      type: String || Schema.Types.ObjectId,
       default: 'parent',
     },
     transaction: {
@@ -42,9 +42,9 @@ const sectorSchema = new Schema<TSector, SectorMethod>(
 );
 
 // Account existence verification
-sectorSchema.statics.isSectorExists = async function (id: string) {
-  const checkSector = await Sector.findById(id);
-  if (checkSector?.isDeleted === true || !checkSector) {
+sectorSchema.statics.isSectorExists = async function (id: Types.ObjectId) {
+  const checkSector = await Sector.findOne({ _id: id, isDeleted: false });
+  if (!checkSector) {
     throw new AppError(httpStatus.NOT_FOUND, "Sector doesn't exists!");
   }
   return checkSector;

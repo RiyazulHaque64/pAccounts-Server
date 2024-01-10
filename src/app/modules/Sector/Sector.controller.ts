@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { SectorServices } from './Sector.service';
@@ -28,7 +29,9 @@ const getSectors = catchAsync(async (req, res) => {
 });
 
 const getSingleSector = catchAsync(async (req, res) => {
-  const result = await SectorServices.getSingleSectorFromDB(req.params.id);
+  const result = await SectorServices.getSingleSectorFromDB(
+    new Types.ObjectId(req.params.id),
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -39,7 +42,7 @@ const getSingleSector = catchAsync(async (req, res) => {
 
 const updateSector = catchAsync(async (req, res) => {
   const result = await SectorServices.updateSectorIntoDB(
-    req.params.id,
+    new Types.ObjectId(req.params.id),
     req.body,
   );
   sendResponse(res, {
@@ -51,7 +54,7 @@ const updateSector = catchAsync(async (req, res) => {
 });
 
 const deleteSector = catchAsync(async (req, res) => {
-  await SectorServices.deleteSectorFromDB(req.params?.id);
+  await SectorServices.deleteSectorFromDB(new Types.ObjectId(req.params?.id));
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

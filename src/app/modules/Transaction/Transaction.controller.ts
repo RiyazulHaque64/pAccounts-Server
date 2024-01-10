@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { TransactionServices } from './Transaction.service';
@@ -17,6 +18,32 @@ const createTransaction = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleTransaction = catchAsync(async (req, res) => {
+  const result = await TransactionServices.getSingleTransactionFromDB(
+    new Types.ObjectId(req.params.id),
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transaction is retrieved successfully',
+    data: result,
+  });
+});
+
+const deleteTransaction = catchAsync(async (req, res) => {
+  await TransactionServices.deleteTransactionFromDB(
+    new Types.ObjectId(req.params.id),
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transaction is deleted successfully',
+    data: null,
+  });
+});
+
 export const TransactionControllers = {
   createTransaction,
+  deleteTransaction,
+  getSingleTransaction,
 };

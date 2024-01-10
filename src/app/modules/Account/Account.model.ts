@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import AppError from '../../error/AppError';
 import { AccountType } from './Account.constant';
 import { AccountMethod, TAccount } from './Account.interface';
@@ -39,9 +39,9 @@ const accountSchema = new Schema<TAccount, AccountMethod>(
 );
 
 // Account existence verification
-accountSchema.statics.isAccountExists = async function (id: string) {
-  const checkAccount = await Account.findById(id);
-  if (checkAccount?.isDeleted === true || !checkAccount) {
+accountSchema.statics.isAccountExists = async function (id: Types.ObjectId) {
+  const checkAccount = await Account.findOne({ _id: id, isDeleted: false });
+  if (!checkAccount) {
     throw new AppError(httpStatus.NOT_FOUND, "Account doesn't exists!");
   }
   return checkAccount;
