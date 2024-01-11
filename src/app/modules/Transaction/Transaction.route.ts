@@ -12,6 +12,11 @@ router.post(
 );
 
 router.get('/:id', TransactionControllers.getSingleTransaction);
+router.put(
+  '/:id',
+  validateRequest(TransactionValidations.updateTransactionValidationSchema),
+  TransactionControllers.updateTransaction,
+);
 
 router.delete('/:id', TransactionControllers.deleteTransaction);
 

@@ -30,6 +30,19 @@ const getSingleTransaction = catchAsync(async (req, res) => {
   });
 });
 
+const updateTransaction = catchAsync(async (req, res) => {
+  const result = await TransactionServices.updateTransactionIntoDB(
+    new Types.ObjectId(req.params.id),
+    req.body,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transaction is updated successfully',
+    data: result,
+  });
+});
+
 const deleteTransaction = catchAsync(async (req, res) => {
   await TransactionServices.deleteTransactionFromDB(
     new Types.ObjectId(req.params.id),
@@ -46,4 +59,5 @@ export const TransactionControllers = {
   createTransaction,
   deleteTransaction,
   getSingleTransaction,
+  updateTransaction,
 };
