@@ -12,11 +12,12 @@ const createSectorIntoDB = async (user: string, payload: TSector) => {
   return result;
 };
 
-const getSectorsFromDB = async (query: Record<string, unknown>) => {
-  console.log(query);
-  console.log(sectorSearchableField);
+const getSectorsFromDB = async (
+  user: string,
+  query: Record<string, unknown>,
+) => {
   const accountQuery = new QueryBuilder(
-    Sector.find({ isDeleted: false }),
+    Sector.find({ user, isDeleted: false }),
     query,
   )
     .search(sectorSearchableField)

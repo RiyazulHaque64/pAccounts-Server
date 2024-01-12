@@ -11,7 +11,10 @@ router.post(
   TransactionControllers.createTransaction,
 );
 
+router.get('/', TransactionControllers.getTransactions);
+
 router.get('/:id', TransactionControllers.getSingleTransaction);
+
 router.put(
   '/:id',
   validateRequest(TransactionValidations.updateTransactionValidationSchema),

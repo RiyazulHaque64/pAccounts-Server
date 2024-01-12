@@ -18,6 +18,19 @@ const createTransaction = catchAsync(async (req, res) => {
   });
 });
 
+const getTransactions = catchAsync(async (req, res) => {
+  const result = await TransactionServices.getTransactionsFromDB(
+    'riyazulhaque64@gmail.com',
+    req.query,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transactions are retrieved successfully',
+    data: result,
+  });
+});
+
 const getSingleTransaction = catchAsync(async (req, res) => {
   const result = await TransactionServices.getSingleTransactionFromDB(
     new Types.ObjectId(req.params.id),
@@ -60,4 +73,5 @@ export const TransactionControllers = {
   deleteTransaction,
   getSingleTransaction,
   updateTransaction,
+  getTransactions,
 };

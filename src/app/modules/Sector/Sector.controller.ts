@@ -19,7 +19,10 @@ const createSector = catchAsync(async (req, res) => {
 });
 
 const getSectors = catchAsync(async (req, res) => {
-  const result = await SectorServices.getSectorsFromDB(req.query);
+  const result = await SectorServices.getSectorsFromDB(
+    'riyazulhaque64@gmail.com',
+    req.query,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

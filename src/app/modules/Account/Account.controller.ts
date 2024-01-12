@@ -19,7 +19,10 @@ const createAccount = catchAsync(async (req, res) => {
 });
 
 const getAccounts = catchAsync(async (req, res) => {
-  const result = await AccountServices.getAccountsFromDB(req.query);
+  const result = await AccountServices.getAccountsFromDB(
+    'riyazulhaque64@gmail.com',
+    req.query,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

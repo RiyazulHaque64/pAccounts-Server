@@ -12,9 +12,12 @@ const createAccountIntoDB = async (user: string, payload: TAccount) => {
   return result;
 };
 
-const getAccountsFromDB = async (query: Record<string, unknown>) => {
+const getAccountsFromDB = async (
+  user: string,
+  query: Record<string, unknown>,
+) => {
   const accountQuery = new QueryBuilder(
-    Account.find({ isDeleted: false }),
+    Account.find({ user, isDeleted: false }),
     query,
   )
     .search(AccountSearchableField)
