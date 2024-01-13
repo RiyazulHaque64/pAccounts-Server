@@ -18,6 +18,31 @@ const createTransactor = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleTransactor = catchAsync(async (req, res) => {
+  const result = await TransactorServices.getSingleTransactorFromDB(
+    new Types.ObjectId(req.params.id),
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transactor is retrieved successfully',
+    data: result,
+  });
+});
+
+const updateTransactor = catchAsync(async (req, res) => {
+  const result = await TransactorServices.updateTransactorIntoDB(
+    new Types.ObjectId(req.params.id),
+    req.body,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transactor is updated successfully',
+    data: result,
+  });
+});
+
 const deleteTransactor = catchAsync(async (req, res) => {
   await TransactorServices.deleteTransactorFromDB(
     new Types.ObjectId(req.params.id),
@@ -33,4 +58,6 @@ const deleteTransactor = catchAsync(async (req, res) => {
 export const TransactorControllers = {
   createTransactor,
   deleteTransactor,
+  updateTransactor,
+  getSingleTransactor,
 };

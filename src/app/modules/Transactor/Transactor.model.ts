@@ -13,7 +13,10 @@ const transactorSchema = new Schema<TTransactor, TransactorMethod>(
       type: String,
       required: [true, 'Transactor name is required!'],
     },
-    reference: String,
+    reference: {
+      type: String,
+      default: '',
+    },
     contactNumber: {
       type: String,
       required: [true, 'Contact number is required!'],
@@ -30,6 +33,7 @@ const transactorSchema = new Schema<TTransactor, TransactorMethod>(
     isDeleted: {
       type: Boolean,
       default: false,
+      select: 0,
     },
   },
   { timestamps: true },

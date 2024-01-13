@@ -11,6 +11,14 @@ router.post(
   TransactorControllers.createTransactor,
 );
 
+router.get('/:id', TransactorControllers.getSingleTransactor);
+
+router.put(
+  '/:id',
+  validateRequest(TransactorValidations.updateTransactorValidationSchema),
+  TransactorControllers.updateTransactor,
+);
+
 router.delete('/:id', TransactorControllers.deleteTransactor);
 
 export const TransactorRoutes = router;

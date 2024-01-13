@@ -24,6 +24,31 @@ const createTransactorValidationSchema = z.object({
   }),
 });
 
+const updateTransactorValidationSchema = z.object({
+  body: z.object({
+    transactorName: z
+      .string({
+        invalid_type_error: 'Transactor name will be a string!',
+      })
+      .optional(),
+    reference: z
+      .string({ invalid_type_error: 'Reference will be a string!' })
+      .optional(),
+    contactNumber: z
+      .string({
+        invalid_type_error: 'Contact number will be a string!',
+      })
+      .refine(
+        (value) => isValidNumber(value),
+        (value) => ({
+          message: `${value} is not a valid contact number or without country code`,
+        }),
+      )
+      .optional(),
+  }),
+});
+
 export const TransactorValidations = {
   createTransactorValidationSchema,
+  updateTransactorValidationSchema,
 };
