@@ -18,6 +18,19 @@ const createTransactor = catchAsync(async (req, res) => {
   });
 });
 
+const getTransactors = catchAsync(async (req, res) => {
+  const result = await TransactorServices.getTransactorsFromDB(
+    'riyazulhaque64@gmail.com',
+    req.query,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Transactors are retrieved successfully',
+    data: result,
+  });
+});
+
 const getSingleTransactor = catchAsync(async (req, res) => {
   const result = await TransactorServices.getSingleTransactorFromDB(
     new Types.ObjectId(req.params.id),
@@ -60,4 +73,5 @@ export const TransactorControllers = {
   deleteTransactor,
   updateTransactor,
   getSingleTransactor,
+  getTransactors,
 };

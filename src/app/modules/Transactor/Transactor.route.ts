@@ -11,6 +11,8 @@ router.post(
   TransactorControllers.createTransactor,
 );
 
+router.get('/', TransactorControllers.getTransactors);
+
 router.get('/:id', TransactorControllers.getSingleTransactor);
 
 router.put(
