@@ -1,9 +1,10 @@
 import { ErrorRequestHandler } from 'express';
 import httpStatus from 'http-status';
-import { TErrorSource } from '../interface/error';
 import config from '../config';
+import duplicateErrorHandler from '../error/duplicateErrorHandler';
 import mongooseErrorHandler from '../error/mongooseErrorHandler';
 import zodErrorHandler from '../error/zodErrorHandler';
+import { TErrorSource } from '../interface/error';
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
@@ -27,12 +28,18 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSources;
+  } else if (error?.code === 11000) {
+    const simplifiedError = duplicateErrorHandler(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources;
   }
   return res.status(statusCode).json({
     success: false,
     message,
     errorSources,
     stack: config.node_env === 'development' ? error?.stack : null,
+    error,
   });
 };
 
