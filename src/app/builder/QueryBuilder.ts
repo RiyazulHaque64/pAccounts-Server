@@ -22,23 +22,9 @@ class QueryBuilder<T> {
   }
   filter() {
     const queryObj = { ...this.query };
-    type findObj = {
-      [key: string]: { $regex: RegExp } | number | boolean;
-    };
-    const findingObj: findObj = {};
-    for (const [key, value] of Object.entries(queryObj)) {
-      console.log(typeof value);
-      findingObj[key] =
-        typeof value === 'string'
-          ? {
-              $regex: new RegExp(value as string),
-            }
-          : (value as number | boolean);
-    }
-    console.log(findingObj);
     const excludeField = ['searchTerm', 'sort', 'select', 'limit', 'page'];
     excludeField.forEach((field) => delete queryObj[field]);
-    this.queryModel = this.queryModel.find(findingObj as FilterQuery<T>);
+    this.queryModel = this.queryModel.find(queryObj as FilterQuery<T>);
     return this;
   }
   sort() {
