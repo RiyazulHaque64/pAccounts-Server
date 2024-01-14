@@ -1,3 +1,5 @@
+import { Model, Types } from 'mongoose';
+
 export interface TUser {
   name: string;
   email: string;
@@ -5,4 +7,9 @@ export interface TUser {
   photoUrl: string;
   status: 'in-progress' | 'blocked';
   isDeleted: boolean;
+}
+
+export interface UserMethod extends Model<TUser> {
+  // eslint-disable-next-line no-unused-vars
+  isUserExists(id: Types.ObjectId): Promise<TUser> | null;
 }

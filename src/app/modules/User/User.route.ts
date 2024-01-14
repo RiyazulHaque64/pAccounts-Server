@@ -11,4 +11,8 @@ router.post(
   UserControllers.createUser,
 );
 
+router.get('/:id', UserControllers.getSingleUser);
+
+router.delete('/:id', UserControllers.deleteUser);
+
 export const UserRoutes = router;

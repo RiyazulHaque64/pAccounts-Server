@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './User.service';
@@ -14,6 +15,30 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleUser = catchAsync(async (req, res) => {
+  const result = await UserServices.getSingleUserFromDB(
+    new Types.ObjectId(req.params.id),
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is retrieved successfully',
+    data: result,
+  });
+});
+
+const deleteUser = catchAsync(async (req, res) => {
+  await UserServices.deleteUserIntoDB(new Types.ObjectId(req.params.id));
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is deleted successfully',
+    data: null,
+  });
+});
+
 export const UserControllers = {
   createUser,
+  deleteUser,
+  getSingleUser,
 };

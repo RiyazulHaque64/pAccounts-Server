@@ -1,8 +1,10 @@
-import { Schema, model } from 'mongoose';
+import httpStatus from 'http-status';
+import { Schema, Types, model } from 'mongoose';
+import AppError from '../../error/AppError';
 import { UserRole, UserStatus } from './User.const';
-import { TUser } from './User.interface';
+import { TUser, UserMethod } from './User.interface';
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, UserMethod>(
   {
     name: {
       type: String,
@@ -38,5 +40,13 @@ const userSchema = new Schema<TUser>(
   },
 );
 
-const User = model<TUser>('User', userSchema);
+userSchema.statics.isUserExists = async function (id: Types.ObjectId) {
+  const user = await User.findOne(id, { isDeleted: false });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User doesn't exists");
+  }
+  return user;
+};
+
+const User = model<TUser, UserMethod>('User', userSchema);
 export default User;
