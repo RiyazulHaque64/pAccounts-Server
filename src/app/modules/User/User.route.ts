@@ -13,6 +13,12 @@ router.post(
 
 router.get('/:id', UserControllers.getSingleUser);
 
+router.put(
+  '/:id',
+  validateRequest(UserValidations.updateUserValidationShcema),
+  UserControllers.updateUser,
+);
+
 router.delete('/:id', UserControllers.deleteUser);
 
 export const UserRoutes = router;

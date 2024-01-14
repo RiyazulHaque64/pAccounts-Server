@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { AccountControllers } from './Account.controller';
 import { AccountValidations } from './Account.validation';
@@ -7,20 +8,22 @@ const router = Router();
 
 router.post(
   '/',
+  auth('user', 'admin'),
   validateRequest(AccountValidations.createAccountValidationSchema),
   AccountControllers.createAccount,
 );
 
-router.get('/', AccountControllers.getAccounts);
+router.get('/', auth('user'), AccountControllers.getAccounts);
 
-router.get('/:id', AccountControllers.getSingleAccount);
+router.get('/:id', auth('user'), AccountControllers.getSingleAccount);
 
 router.put(
   '/:id',
+  auth('user'),
   validateRequest(AccountValidations.updateAccountValidationSchema),
   AccountControllers.updateAccount,
 );
 
-router.delete('/:id', AccountControllers.deleteAccount);
+router.delete('/:id', auth('user'), AccountControllers.deleteAccount);
 
 export const AccountRoutes = router;

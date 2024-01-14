@@ -21,6 +21,30 @@ const createUserValidationShcema = z.object({
   }),
 });
 
+const updateUserValidationShcema = z.object({
+  body: z.object({
+    name: z
+      .string({
+        required_error: 'User name is must be required!',
+        invalid_type_error: 'User name should be a string!',
+      })
+      .optional(),
+    email: z
+      .string({
+        required_error: 'User email is must be required!',
+        invalid_type_error: 'User email should be a string!',
+      })
+      .email({ message: 'This email is not a valid email!' })
+      .optional(),
+    role: z.enum([...UserRole] as [string]).optional(),
+    photoUrl: z
+      .string({ invalid_type_error: 'Photo url should be a string!' })
+      .optional(),
+    status: z.enum([...UserStatus] as [string]).optional(),
+  }),
+});
+
 export const UserValidations = {
   createUserValidationShcema,
+  updateUserValidationShcema,
 };

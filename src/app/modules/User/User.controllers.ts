@@ -27,6 +27,30 @@ const getSingleUser = catchAsync(async (req, res) => {
   });
 });
 
+const getUsers = catchAsync(async (req, res) => {
+  const result = await UserServices.getUsersFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users are retrieved successfully',
+    data: result,
+  });
+});
+
+const updateUser = catchAsync(async (req, res) => {
+  const result = await UserServices.updateUserIntoDB(
+    'user',
+    new Types.ObjectId(req.params.id),
+    req.body,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is updated successfully',
+    data: result,
+  });
+});
+
 const deleteUser = catchAsync(async (req, res) => {
   await UserServices.deleteUserIntoDB(new Types.ObjectId(req.params.id));
   sendResponse(res, {
@@ -41,4 +65,6 @@ export const UserControllers = {
   createUser,
   deleteUser,
   getSingleUser,
+  getUsers,
+  updateUser,
 };
