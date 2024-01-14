@@ -17,8 +17,9 @@ export interface TTransaction {
     | 'return deposit'
     | 'deposit withdrawal'
     | 'account to account';
-  field: Types.ObjectId;
-  fieldType: string;
+  transferredAccount?: Types.ObjectId;
+  sector?: Types.ObjectId;
+  transactor?: Types.ObjectId;
   account: Types.ObjectId;
   amount: number;
 }

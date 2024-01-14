@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TransactionTypes } from './Transaction.const';
 
 const createTransactionValidationSchema = z.object({
   body: z.object({
@@ -12,10 +13,7 @@ const createTransactionValidationSchema = z.object({
       required_error: 'Transaction title is required!',
       invalid_type_error: 'Transaction title must be in string!',
     }),
-    sector: z.string({
-      required_error: 'Sector is required!',
-      invalid_type_error: 'Sector must be in string!',
-    }),
+    transactionType: z.enum([...TransactionTypes] as [string]),
     account: z.string({
       required_error: 'Account is required!',
       invalid_type_error: 'Account must be in string!',
@@ -41,7 +39,8 @@ const updateTransactionValidationSchema = z.object({
         invalid_type_error: 'Transaction title must be in string!',
       })
       .optional(),
-    sector: z.string({
+    transactionType: z.enum([...TransactionTypes] as [string]).optional(),
+    field: z.string({
       required_error: 'Sector is required!',
       invalid_type_error: 'Sector must be in string!',
     }),

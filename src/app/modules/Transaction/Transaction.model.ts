@@ -24,14 +24,20 @@ const transactionSchema = new Schema<TTransaction, TransactionMethod>(
       enum: TransactionTypes,
       required: [true, 'Transaction type is required!'],
     },
-    field: {
+    transferredAccount: {
       type: Schema.Types.ObjectId,
-      required: [true, 'Sector is required!'],
-      refPath: 'fieldType',
+      ref: 'Account',
+      default: new Types.ObjectId(),
     },
-    fieldType: {
-      type: String,
-      enum: ['Sector', 'Transactor'],
+    sector: {
+      type: Schema.Types.ObjectId,
+      ref: 'Sector',
+      default: new Types.ObjectId(),
+    },
+    transactor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Transactor',
+      default: new Types.ObjectId(),
     },
     account: {
       type: Schema.Types.ObjectId,
@@ -50,9 +56,9 @@ const transactionSchema = new Schema<TTransaction, TransactionMethod>(
 transactionSchema.statics.isTransactionExists = async function (
   id: Types.ObjectId,
 ) {
-  const checkTransaction = await Transaction.findById(id)
-    .populate('sector')
-    .populate('account');
+  const checkTransaction = await Transaction.findById(id).populate(
+    'user transferredAccount transactor sector account',
+  );
   if (!checkTransaction) {
     throw new AppError(httpStatus.NOT_FOUND, "Transaction doesn't exists!");
   }
