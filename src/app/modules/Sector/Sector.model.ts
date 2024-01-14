@@ -41,9 +41,16 @@ const sectorSchema = new Schema<TSector, SectorMethod>(
   { timestamps: true },
 );
 
-// Account existence verification
-sectorSchema.statics.isSectorExists = async function (id: Types.ObjectId) {
-  const checkSector = await Sector.findOne({ _id: id, isDeleted: false });
+// Sector existence verification
+sectorSchema.statics.isSectorExists = async function (
+  id: Types.ObjectId,
+  userId: Types.ObjectId,
+) {
+  const checkSector = await Sector.findOne({
+    _id: id,
+    user: userId,
+    isDeleted: false,
+  });
   if (!checkSector) {
     throw new AppError(httpStatus.NOT_FOUND, "Sector doesn't exists!");
   }

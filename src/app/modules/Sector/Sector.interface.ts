@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
 export interface TSector {
@@ -12,6 +13,8 @@ export interface TSector {
 }
 
 export interface SectorMethod extends Model<TSector> {
-  // eslint-disable-next-line no-unused-vars
-  isSectorExists(id: Types.ObjectId): Promise<TSector> | null;
+  isSectorExists(
+    id: Types.ObjectId,
+    userId: Types.ObjectId,
+  ): Promise<TSector> | null;
 }

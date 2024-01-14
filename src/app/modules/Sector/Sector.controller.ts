@@ -6,10 +6,7 @@ import { SectorServices } from './Sector.service';
 
 const createSector = catchAsync(async (req, res) => {
   const data = req.body;
-  const result = await SectorServices.createSectorIntoDB(
-    'riyazulhaque64@gmail.com',
-    data,
-  );
+  const result = await SectorServices.createSectorIntoDB(req.user, data);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -19,10 +16,7 @@ const createSector = catchAsync(async (req, res) => {
 });
 
 const getSectors = catchAsync(async (req, res) => {
-  const result = await SectorServices.getSectorsFromDB(
-    'riyazulhaque64@gmail.com',
-    req.query,
-  );
+  const result = await SectorServices.getSectorsFromDB(req.user, req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -34,6 +28,7 @@ const getSectors = catchAsync(async (req, res) => {
 const getSingleSector = catchAsync(async (req, res) => {
   const result = await SectorServices.getSingleSectorFromDB(
     new Types.ObjectId(req.params.id),
+    req.user,
   );
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -46,6 +41,7 @@ const getSingleSector = catchAsync(async (req, res) => {
 const updateSector = catchAsync(async (req, res) => {
   const result = await SectorServices.updateSectorIntoDB(
     new Types.ObjectId(req.params.id),
+    req.user,
     req.body,
   );
   sendResponse(res, {
@@ -57,7 +53,10 @@ const updateSector = catchAsync(async (req, res) => {
 });
 
 const deleteSector = catchAsync(async (req, res) => {
-  await SectorServices.deleteSectorFromDB(new Types.ObjectId(req.params?.id));
+  await SectorServices.deleteSectorFromDB(
+    new Types.ObjectId(req.params?.id),
+    req.user,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
