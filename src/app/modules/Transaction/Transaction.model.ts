@@ -1,13 +1,15 @@
 import httpStatus from 'http-status';
 import { Schema, Types, model } from 'mongoose';
 import AppError from '../../error/AppError';
+import { TransactionTypes } from './Transaction.const';
 import { TTransaction, TransactionMethod } from './Transaction.interface';
 
 const transactionSchema = new Schema<TTransaction, TransactionMethod>(
   {
     user: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: [true, 'User is required!'],
+      ref: 'User',
     },
     date: {
       type: Date,
@@ -17,10 +19,19 @@ const transactionSchema = new Schema<TTransaction, TransactionMethod>(
       type: String,
       required: [true, 'Transaction title is required!'],
     },
-    sector: {
+    transactionType: {
+      type: String,
+      enum: TransactionTypes,
+      required: [true, 'Transaction type is required!'],
+    },
+    field: {
       type: Schema.Types.ObjectId,
       required: [true, 'Sector is required!'],
-      ref: 'Sector',
+      refPath: 'fieldType',
+    },
+    fieldType: {
+      type: String,
+      enum: ['Sector', 'Transactor'],
     },
     account: {
       type: Schema.Types.ObjectId,

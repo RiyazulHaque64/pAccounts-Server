@@ -44,7 +44,7 @@ const getUsers = catchAsync(async (req, res) => {
 
 const updateUser = catchAsync(async (req, res) => {
   const result = await UserServices.updateUserIntoDB(
-    'user',
+    req.user,
     new Types.ObjectId(req.params.id),
     req.body,
   );

@@ -1,15 +1,31 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
 export interface TTransaction {
-  user: string;
+  user: Types.ObjectId;
   date: Date;
   title: string;
-  sector: Types.ObjectId;
+  transactionType:
+    | 'income'
+    | 'expense'
+    | 'taken loan'
+    | 'given loan'
+    | 'pay loan'
+    | 'return loan'
+    | 'taken deposit'
+    | 'add deposit'
+    | 'return deposit'
+    | 'deposit withdrawal'
+    | 'account to account';
+  field: Types.ObjectId;
+  fieldType: string;
   account: Types.ObjectId;
   amount: number;
 }
 
 export interface TransactionMethod extends Model<TTransaction> {
-  // eslint-disable-next-line no-unused-vars
-  isTransactionExists(id: Types.ObjectId): Promise<TTransaction> | null;
+  isTransactionExists(
+    id: Types.ObjectId,
+    userId: Types.ObjectId,
+  ): Promise<TTransaction> | null;
 }
