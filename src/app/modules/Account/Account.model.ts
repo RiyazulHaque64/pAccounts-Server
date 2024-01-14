@@ -9,6 +9,7 @@ const accountSchema = new Schema<TAccount, AccountMethod>(
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User email is required!'],
+      ref: 'User',
     },
     accountName: {
       type: String,

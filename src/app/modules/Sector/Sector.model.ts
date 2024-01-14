@@ -7,8 +7,9 @@ import { SectorMethod, TSector } from './Sector.interface';
 const sectorSchema = new Schema<TSector, SectorMethod>(
   {
     user: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: [true, 'User email is reqired'],
+      ref: 'User',
     },
     sectorName: {
       type: String,

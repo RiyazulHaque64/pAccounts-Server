@@ -3,7 +3,7 @@ import { Model, Types } from 'mongoose';
 
 export interface TSector {
   _id: Types.ObjectId;
-  user: string;
+  user: Types.ObjectId;
   sectorName: string;
   sectorType: 'income' | 'expense';
   parent: 'parent' | Types.ObjectId;

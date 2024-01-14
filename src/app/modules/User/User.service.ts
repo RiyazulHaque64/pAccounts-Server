@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import AppError from '../../error/AppError';
 import { TUser } from './User.interface';
@@ -20,19 +21,18 @@ const getSingleUserFromDB = async (id: Types.ObjectId) => {
 };
 
 const updateUserIntoDB = async (
-  userRole: string,
+  user: JwtPayload,
   id: Types.ObjectId,
   payload: TUser,
 ) => {
-  await User.isUserExists(id);
   const { email, role, status, isDeleted, ...remainingData } = payload;
-  if (userRole === 'user' && (email || role || status || isDeleted)) {
+  if (user.role === 'user' && (email || role || status || isDeleted)) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       'You can update only your name & photo',
     );
   }
-  if (userRole === 'user') {
+  if (user.role === 'user') {
     const result = await User.findByIdAndUpdate(id, remainingData, {
       new: true,
       runValidators: true,

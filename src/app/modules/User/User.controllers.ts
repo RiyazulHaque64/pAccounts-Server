@@ -16,9 +16,14 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getSingleUser = catchAsync(async (req, res) => {
-  const result = await UserServices.getSingleUserFromDB(
-    new Types.ObjectId(req.params.id),
-  );
+  const user = req.user;
+  let result;
+  if (user.role === 'admin') {
+    result = await UserServices.getSingleUserFromDB(
+      new Types.ObjectId(req.params.id),
+    );
+  }
+  result = await UserServices.getSingleUserFromDB(new Types.ObjectId(user._id));
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
