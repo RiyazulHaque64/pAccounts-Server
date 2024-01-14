@@ -7,7 +7,7 @@ import { TransactorServices } from './Transactor.service';
 const createTransactor = catchAsync(async (req, res) => {
   const data = req.body;
   const result = await TransactorServices.createTransactorIntoDB(
-    'riyazulhaque64@gmail.com',
+    req.user,
     data,
   );
   sendResponse(res, {
@@ -20,7 +20,7 @@ const createTransactor = catchAsync(async (req, res) => {
 
 const getTransactors = catchAsync(async (req, res) => {
   const result = await TransactorServices.getTransactorsFromDB(
-    'riyazulhaque64@gmail.com',
+    req.user,
     req.query,
   );
   sendResponse(res, {
@@ -34,6 +34,7 @@ const getTransactors = catchAsync(async (req, res) => {
 const getSingleTransactor = catchAsync(async (req, res) => {
   const result = await TransactorServices.getSingleTransactorFromDB(
     new Types.ObjectId(req.params.id),
+    req.user,
   );
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -46,6 +47,7 @@ const getSingleTransactor = catchAsync(async (req, res) => {
 const updateTransactor = catchAsync(async (req, res) => {
   const result = await TransactorServices.updateTransactorIntoDB(
     new Types.ObjectId(req.params.id),
+    req.user,
     req.body,
   );
   sendResponse(res, {
@@ -59,6 +61,7 @@ const updateTransactor = catchAsync(async (req, res) => {
 const deleteTransactor = catchAsync(async (req, res) => {
   await TransactorServices.deleteTransactorFromDB(
     new Types.ObjectId(req.params.id),
+    req.user,
   );
   sendResponse(res, {
     statusCode: httpStatus.OK,

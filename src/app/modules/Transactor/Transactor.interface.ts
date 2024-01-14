@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
 export interface TTransactor {
   _id: Types.ObjectId;
-  user: string;
+  user: Types.ObjectId;
   transactorName: string;
   reference?: string;
   contactNumber: string;
@@ -12,6 +13,8 @@ export interface TTransactor {
 }
 
 export interface TransactorMethod extends Model<TTransactor> {
-  // eslint-disable-next-line no-unused-vars
-  isTransactorExists(id: Types.ObjectId): Promise<TTransactor> | null;
+  isTransactorExists(
+    id: Types.ObjectId,
+    userId: Types.ObjectId,
+  ): Promise<TTransactor> | null;
 }

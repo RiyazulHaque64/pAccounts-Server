@@ -6,8 +6,9 @@ import { TTransactor, TransactorMethod } from './Transactor.interface';
 const transactorSchema = new Schema<TTransactor, TransactorMethod>(
   {
     user: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: [true, 'User email is required!'],
+      ref: 'User',
     },
     transactorName: {
       type: String,
@@ -41,8 +42,13 @@ const transactorSchema = new Schema<TTransactor, TransactorMethod>(
 
 transactorSchema.statics.isTransactorExists = async function (
   id: Types.ObjectId,
+  userId: Types.ObjectId,
 ) {
-  const transactor = await Transactor.findOne({ _id: id, isDeleted: false });
+  const transactor = await Transactor.findOne({
+    _id: id,
+    user: userId,
+    isDeleted: false,
+  });
   if (!transactor) {
     throw new AppError(httpStatus.BAD_REQUEST, "Transactor doesn't exists!");
   }
