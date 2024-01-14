@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
 export interface TAccount {
   _id: Types.ObjectId;
-  user: string;
+  user: Types.ObjectId;
   accountName: string;
   accountType: 'bank' | 'mobile bank' | 'cash';
   balance: number;
@@ -11,6 +12,8 @@ export interface TAccount {
 }
 
 export interface AccountMethod extends Model<TAccount> {
-  // eslint-disable-next-line no-unused-vars
-  isAccountExists(id: Types.ObjectId): Promise<TAccount> | null;
+  isAccountExists(
+    id: Types.ObjectId,
+    userId: Types.ObjectId,
+  ): Promise<TAccount> | null;
 }

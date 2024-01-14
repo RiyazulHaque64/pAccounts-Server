@@ -7,7 +7,7 @@ import { AccountMethod, TAccount } from './Account.interface';
 const accountSchema = new Schema<TAccount, AccountMethod>(
   {
     user: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: [true, 'User email is required!'],
     },
     accountName: {
@@ -39,8 +39,15 @@ const accountSchema = new Schema<TAccount, AccountMethod>(
 );
 
 // Account existence verification
-accountSchema.statics.isAccountExists = async function (id: Types.ObjectId) {
-  const checkAccount = await Account.findOne({ _id: id, isDeleted: false });
+accountSchema.statics.isAccountExists = async function (
+  id: Types.ObjectId,
+  userId: Types.ObjectId,
+) {
+  const checkAccount = await Account.findOne({
+    _id: id,
+    user: userId,
+    isDeleted: false,
+  });
   if (!checkAccount) {
     throw new AppError(httpStatus.NOT_FOUND, "Account doesn't exists!");
   }

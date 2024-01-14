@@ -41,7 +41,7 @@ const userSchema = new Schema<TUser, UserMethod>(
 );
 
 userSchema.statics.isUserExists = async function (id: Types.ObjectId) {
-  const user = await User.findOne(id, { isDeleted: false });
+  const user = await User.findById(id);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User doesn't exists");
   }

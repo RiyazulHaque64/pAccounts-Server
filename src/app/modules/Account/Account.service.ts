@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../error/AppError';
@@ -6,18 +7,18 @@ import { AccountSearchableField } from './Account.constant';
 import { TAccount } from './Account.interface';
 import Account from './Account.model';
 
-const createAccountIntoDB = async (user: string, payload: TAccount) => {
-  payload.user = user;
+const createAccountIntoDB = async (user: JwtPayload, payload: TAccount) => {
+  payload.user = user._id;
   const result = await Account.create(payload);
   return result;
 };
 
 const getAccountsFromDB = async (
-  user: string,
+  user: JwtPayload,
   query: Record<string, unknown>,
 ) => {
   const accountQuery = new QueryBuilder(
-    Account.find({ user, isDeleted: false }),
+    Account.find({ user: user._id, isDeleted: false }),
     query,
   )
     .search(AccountSearchableField)
@@ -27,18 +28,21 @@ const getAccountsFromDB = async (
     .paginate()
     .fields();
   const result = await accountQuery.queryModel;
-  // const result = await Account.find().limit(2);
   return result;
 };
 
-const getSingleAccountFromDB = async (id: Types.ObjectId) => {
-  const result = await Account.isAccountExists(id);
+const getSingleAccountFromDB = async (id: Types.ObjectId, user: JwtPayload) => {
+  const result = await Account.isAccountExists(id, user._id);
   return result;
 };
 
-const updateAccountIntoDB = async (id: Types.ObjectId, payload: TAccount) => {
+const updateAccountIntoDB = async (
+  id: Types.ObjectId,
+  userId: JwtPayload,
+  payload: TAccount,
+) => {
   const { user, previousBalance, ...remainingData } = payload;
-  const account = await Account.isAccountExists(id);
+  const account = await Account.isAccountExists(id, userId._id);
   if (user) {
     throw new AppError(httpStatus.BAD_REQUEST, "Cann't update the user!");
   }
@@ -61,8 +65,8 @@ const updateAccountIntoDB = async (id: Types.ObjectId, payload: TAccount) => {
   return result;
 };
 
-const deleteAccountFromDB = async (id: Types.ObjectId) => {
-  const account = await Account.isAccountExists(id);
+const deleteAccountFromDB = async (id: Types.ObjectId, userId: JwtPayload) => {
+  const account = await Account.isAccountExists(id, userId._id);
   const result = await Account.findByIdAndUpdate(id, {
     previousBalance: account?.balance,
     balance: 0,

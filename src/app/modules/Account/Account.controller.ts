@@ -6,10 +6,7 @@ import { AccountServices } from './Account.service';
 
 const createAccount = catchAsync(async (req, res) => {
   const data = req.body;
-  const result = await AccountServices.createAccountIntoDB(
-    'riyazulhaque64@gmail.com',
-    data,
-  );
+  const result = await AccountServices.createAccountIntoDB(req.user, data);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -19,10 +16,7 @@ const createAccount = catchAsync(async (req, res) => {
 });
 
 const getAccounts = catchAsync(async (req, res) => {
-  const result = await AccountServices.getAccountsFromDB(
-    'riyazulhaque64@gmail.com',
-    req.query,
-  );
+  const result = await AccountServices.getAccountsFromDB(req.user, req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -34,6 +28,7 @@ const getAccounts = catchAsync(async (req, res) => {
 const getSingleAccount = catchAsync(async (req, res) => {
   const result = await AccountServices.getSingleAccountFromDB(
     new Types.ObjectId(req.params.id),
+    req.user,
   );
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -46,6 +41,7 @@ const getSingleAccount = catchAsync(async (req, res) => {
 const updateAccount = catchAsync(async (req, res) => {
   const result = await AccountServices.updateAccountIntoDB(
     new Types.ObjectId(req.params.id),
+    req.user,
     req.body,
   );
   sendResponse(res, {
@@ -57,7 +53,10 @@ const updateAccount = catchAsync(async (req, res) => {
 });
 
 const deleteAccount = catchAsync(async (req, res) => {
-  await AccountServices.deleteAccountFromDB(new Types.ObjectId(req.params?.id));
+  await AccountServices.deleteAccountFromDB(
+    new Types.ObjectId(req.params?.id),
+    req.user,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
