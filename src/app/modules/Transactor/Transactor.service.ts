@@ -23,7 +23,11 @@ const getTransactorsFromDB = async (
     query,
   )
     .search(SearchableFields)
-    .filter();
+    .filter()
+    .sort()
+    .limit()
+    .paginate()
+    .fields();
   const result = await transactorQuery.queryModel;
   return result;
 };
