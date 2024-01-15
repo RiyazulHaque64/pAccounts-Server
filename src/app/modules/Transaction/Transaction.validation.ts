@@ -40,10 +40,6 @@ const updateTransactionValidationSchema = z.object({
       })
       .optional(),
     transactionType: z.enum([...TransactionTypes] as [string]).optional(),
-    field: z.string({
-      required_error: 'Sector is required!',
-      invalid_type_error: 'Sector must be in string!',
-    }),
     account: z.string({
       required_error: 'Account is required!',
       invalid_type_error: 'Account must be in string!',

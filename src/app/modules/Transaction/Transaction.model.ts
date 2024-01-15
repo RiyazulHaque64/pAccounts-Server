@@ -55,14 +55,16 @@ const transactionSchema = new Schema<TTransaction, TransactionMethod>(
 // Transaction existence verification
 transactionSchema.statics.isTransactionExists = async function (
   id: Types.ObjectId,
+  userId: Types.ObjectId,
 ) {
-  const checkTransaction = await Transaction.findById(id).populate(
-    'user transferredAccount transactor sector account',
-  );
-  if (!checkTransaction) {
+  const transaction = await Transaction.findOne({
+    _id: id,
+    user: userId,
+  }).populate('user transferredAccount transactor sector account');
+  if (!transaction) {
     throw new AppError(httpStatus.NOT_FOUND, "Transaction doesn't exists!");
   }
-  return checkTransaction;
+  return transaction;
 };
 
 const Transaction = model<TTransaction, TransactionMethod>(

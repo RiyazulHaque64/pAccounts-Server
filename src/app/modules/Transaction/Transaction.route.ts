@@ -17,13 +17,13 @@ router.get('/', auth('user'), TransactionControllers.getTransactions);
 
 router.get('/:id', auth('user'), TransactionControllers.getSingleTransaction);
 
-// router.put(
-//   '/:id',
-//   auth('user'),
-//   validateRequest(TransactionValidations.updateTransactionValidationSchema),
-//   TransactionControllers.updateTransaction,
-// );
+router.put(
+  '/:id',
+  auth('user'),
+  // validateRequest(TransactionValidations.updateTransactionValidationSchema),
+  TransactionControllers.updateTransaction,
+);
 
-// router.delete('/:id', auth('user'), TransactionControllers.deleteTransaction);
+router.delete('/:id', auth('user'), TransactionControllers.deleteTransaction);
 
 export const TransactionRoutes = router;
