@@ -297,7 +297,6 @@ const updateTransactionIntoDB = async (
     account: prevAccount,
     amount: prevAmount,
   } = previousTransaction;
-
   const session = await mongoose.startSession();
 
   try {
@@ -592,7 +591,7 @@ const updateTransactionIntoDB = async (
         throw new AppError(httpStatus.BAD_REQUEST, 'Insufficient balance!');
       }
     }
-    if (prevTransactor) {
+    if (transactorData) {
       if (
         transactionType === 'taken loan' ||
         transactionType === 'return loan' ||
